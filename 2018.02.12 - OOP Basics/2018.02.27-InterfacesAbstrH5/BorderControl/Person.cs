@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-public class Person : Robot
+public class Person : Robot, IAge
 {
-    private List<string> list = new List<string>();
-    public Person(string id, string name, int age):base(id, name)
+    public Person(string id, string name, int age, DateTime birthDate) : base(id, name)
     {
         Age = age;
+        BirthDate = birthDate;
     }
 
     public int Age { get; set; }
+    public DateTime BirthDate { get; set; }
 }

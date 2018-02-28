@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-public class Robot :IResidents
+public class Pet
 {
-    public Robot(string id, string name)
+    public Pet(string name, DateTime birthDate)
     {
         Name = name;
-        Id = id;
+        BirthDate = birthDate;
     }
-
+    public DateTime BirthDate { get; set; }
     public string Name { get; set; }
-    public string Id { get; set; }
 }
