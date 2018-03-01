@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-public interface IResidents
+public interface IResident
 {
-    string Id { get; }
     string Name { get; }
+    string Country { get; }
+    string GetName();
 }

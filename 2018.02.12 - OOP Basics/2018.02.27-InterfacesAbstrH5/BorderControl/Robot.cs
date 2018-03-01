@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-public class Robot :IResidents
+public class Robot
 {
     public Robot(string id, string name)
     {

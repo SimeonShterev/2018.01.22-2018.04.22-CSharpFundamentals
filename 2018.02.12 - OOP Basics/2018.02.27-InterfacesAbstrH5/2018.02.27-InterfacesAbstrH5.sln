@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferrari", "Ferrari\Ferrari.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telephony", "Telephony\Telephony.csproj", "{E95D658D-170B-422F-BDC1-BBE842229378}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorderControl", "BorderControl\BorderControl.csproj", "{F8B880CF-6F86-49B9-B163-F8F06A244527}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BorderControl", "BorderControl\BorderControl.csproj", "{F8B880CF-6F86-49B9-B163-F8F06A244527}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplicitInterfaces", "ExplicitInterfaces\ExplicitInterfaces.csproj", "{165709CD-73D1-40A9-961F-7FBE23317EF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionHierarchy", "CollectionHierarchy\CollectionHierarchy.csproj", "{3D7D4570-E2A1-4FCC-9EBB-BCB3413C81A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{F8B880CF-6F86-49B9-B163-F8F06A244527}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8B880CF-6F86-49B9-B163-F8F06A244527}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8B880CF-6F86-49B9-B163-F8F06A244527}.Release|Any CPU.Build.0 = Release|Any CPU
+		{165709CD-73D1-40A9-961F-7FBE23317EF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{165709CD-73D1-40A9-961F-7FBE23317EF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{165709CD-73D1-40A9-961F-7FBE23317EF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{165709CD-73D1-40A9-961F-7FBE23317EF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D7D4570-E2A1-4FCC-9EBB-BCB3413C81A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D7D4570-E2A1-4FCC-9EBB-BCB3413C81A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D7D4570-E2A1-4FCC-9EBB-BCB3413C81A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D7D4570-E2A1-4FCC-9EBB-BCB3413C81A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
