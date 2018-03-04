@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BorderControl", "BorderCont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExplicitInterfaces", "ExplicitInterfaces\ExplicitInterfaces.csproj", "{165709CD-73D1-40A9-961F-7FBE23317EF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionHierarchy", "CollectionHierarchy\CollectionHierarchy.csproj", "{3D7D4570-E2A1-4FCC-9EBB-BCB3413C81A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionHierarchy", "CollectionHierarchy\CollectionHierarchy.csproj", "{0B102009-2458-4B34-A110-26ABAD460154}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{165709CD-73D1-40A9-961F-7FBE23317EF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{165709CD-73D1-40A9-961F-7FBE23317EF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{165709CD-73D1-40A9-961F-7FBE23317EF0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D7D4570-E2A1-4FCC-9EBB-BCB3413C81A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D7D4570-E2A1-4FCC-9EBB-BCB3413C81A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D7D4570-E2A1-4FCC-9EBB-BCB3413C81A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D7D4570-E2A1-4FCC-9EBB-BCB3413C81A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B102009-2458-4B34-A110-26ABAD460154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B102009-2458-4B34-A110-26ABAD460154}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B102009-2458-4B34-A110-26ABAD460154}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B102009-2458-4B34-A110-26ABAD460154}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

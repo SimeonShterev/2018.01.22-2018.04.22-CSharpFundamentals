@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-public interface IRemoveFirst
+public interface IAddRemove : IAdd
 {
-    string RemoveFirstElement();
+    void Remove(int count);
 }

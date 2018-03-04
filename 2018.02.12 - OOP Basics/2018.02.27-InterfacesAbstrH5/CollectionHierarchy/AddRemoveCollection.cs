@@ -2,17 +2,34 @@
 using System.Collections.Generic;
 using System.Text;
 
-class AddRemoveCollection : AbstactList, IAddFirst, IRemoveLast
+public class AddRemoveCollection : IAddRemove
 {
-    public AddRemoveCollection(List<string> input) : base(input) { }
+    private List<string> list;
 
-    public string AddFirstElement()
+    public AddRemoveCollection()
     {
-        throw new NotImplementedException();
+        list = new List<string>();
     }
 
-    public string RemoveLastElement()
+    public void Add(List<string> input)
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < input.Count; i++)
+        {
+            list.Insert(0, input[i]);
+            int index = list.IndexOf(input[i]);
+            Console.Write($"{index} ");
+        }
+        Console.WriteLine();
+    }
+
+    public void Remove(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            string elementAtLastIndex = this.list[this.list.Count - 1];
+            this.list.RemoveAt(this.list.Count - 1);
+            Console.Write($"{elementAtLastIndex} ");
+        }
+        Console.WriteLine();
     }
 }

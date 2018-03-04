@@ -2,17 +2,39 @@
 using System.Collections.Generic;
 using System.Text;
 
-class MyList : AbstactList, IAddFirst, IRemoveLast
+public class MyList : IMyList
 {
-    public MyList(List<string> input) : base(input) { }
+    private List<string> list;
 
-    public string AddFirstElement()
+    public MyList()
     {
-        throw new NotImplementedException();
+        list = new List<string>();
     }
 
-    public string RemoveLastElement()
+    public void Add(List<string> input)
     {
-        throw new NotImplementedException();
+        for (int i = 0; i < input.Count; i++)
+        {
+            list.Insert(0, input[i]);
+            int index = list.IndexOf(input[i]);
+            Console.Write($"{index} ");
+        }
+        Console.WriteLine();
+    }
+
+    public int GetNumOfElements()
+    {
+        return this.list.Count;
+    }
+
+    public void Remove(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            string elementAtFirstIndex = this.list[0];
+            this.list.RemoveAt(0);
+            Console.Write($"{elementAtFirstIndex} ");
+        }
+        Console.WriteLine();
     }
 }

@@ -7,8 +7,14 @@ class Program
     static void Main(string[] args)
     {
         List<string> input = Console.ReadLine().Split().ToList();
-        AbstactList programList = new AbstactList(input);
-        MyList newList = new MyList(input);
-        (MyList)programList.
+        AddCollection addList = new AddCollection();
+        AddRemoveCollection addRemoveList = new AddRemoveCollection();
+        MyList myList = new MyList();
+        addList.Add(input);
+        addRemoveList.Add(input);
+        myList.Add(input);
+        int itemsToRemove = int.Parse(Console.ReadLine());
+        addRemoveList.Remove(itemsToRemove);
+        myList.Remove(itemsToRemove);
     }
 }

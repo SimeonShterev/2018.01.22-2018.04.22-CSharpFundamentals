@@ -2,12 +2,22 @@
 using System.Collections.Generic;
 using System.Text;
 
-class AddCollection : AbstactList, IAddLast
+public class AddCollection : IAdd
 {
-    public AddCollection(List<string> input) : base(input) { }
+    private List<string> list;
 
-    public string AddLastElement()
+    public AddCollection()
     {
-        throw new NotImplementedException();
+        list = new List<string>();
+    }
+
+    public void Add(List<string> input)
+    {
+        for (int i = 0; i < input.Count; i++)
+        {
+            list.Add(input[i]);
+            Console.Write($"{i} ");
+        }
+        Console.WriteLine();
     }
 }

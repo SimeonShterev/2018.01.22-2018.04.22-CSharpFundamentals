@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-public interface IAddLast
+public interface IMyList : IAddRemove
 {
-    string AddLastElement();
+    int GetNumOfElements();
 }
