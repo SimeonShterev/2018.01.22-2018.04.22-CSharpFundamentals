@@ -19,5 +19,9 @@ public abstract class Animal
 
     public abstract void ProduceSound();
 
+    public abstract bool TryFeed(string food);
+
     public abstract void WeightIncrease(int foodQuantity);
+
+    public abstract override string ToString();
 }
