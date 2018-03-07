@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookShopSecondTry", "BookSh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ManKind", "ManKind\ManKind.csproj", "{35FD07D3-F6BF-41DB-AE5B-8CC66568309A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Animals", "Animals\Animals.csproj", "{9E8F79D8-6E80-47D4-85E0-4474D01C0C13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Animals", "Animals\Animals.csproj", "{9E8F79D8-6E80-47D4-85E0-4474D01C0C13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineRadioDatabase", "OnlineRadioDatabase\OnlineRadioDatabase.csproj", "{680BB1F6-D1EB-4D64-AC2E-B6DB92EDD9DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{9E8F79D8-6E80-47D4-85E0-4474D01C0C13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E8F79D8-6E80-47D4-85E0-4474D01C0C13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E8F79D8-6E80-47D4-85E0-4474D01C0C13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{680BB1F6-D1EB-4D64-AC2E-B6DB92EDD9DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{680BB1F6-D1EB-4D64-AC2E-B6DB92EDD9DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{680BB1F6-D1EB-4D64-AC2E-B6DB92EDD9DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{680BB1F6-D1EB-4D64-AC2E-B6DB92EDD9DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
