@@ -4,33 +4,49 @@ using System.Text;
 
 public class Radio : IRadio
 {
-    private const string InvalidSongEx = "Invalid song.";
-    private const string InvalidArtistNameEx = "Artist name should be between 3 and 20 symbols.";
-    private const string InvalidSongNameEx = "Song name should be between 3 and 30 symbols.";
-    private const string InvalidSongLenghtEx = "Invalid song length.";
-    private const string InvalidSongMinutesEx = "Song minutes should be between 0 and 14.";
-    private const string InvalidSongSecondssEx = "Song seconds should be between 0 and 59.";
-
     private string artistName;
     private string songName;
+	private string lenght;
     private int minutes;
     private int seconds;
 
-    public Radio(string artistName, string songName, int minutes, int seconds)
+    public Radio(string artistName, string songName, string lenght)
     {
         this.ArtistName = artistName;
         this.SongName = songName;
-        this.Minutes = minutes;
-        this.Seconds = seconds;
+		this.Lenght = lenght;
     }
 
-    public int Seconds
+	public string Lenght {
+		get
+		{
+			return this.lenght;
+		}
+		set
+		{
+			string[] timeTokens = value.Split(':', StringSplitOptions.RemoveEmptyEntries);
+			if (timeTokens.Length != 2)
+				throw new InvalidSongLenghtException();
+			bool minuteParse = int.TryParse(timeTokens[0], out int minutes);
+			bool secondsParse = int.TryParse(timeTokens[1], out int seconds);
+			if (!minuteParse || !secondsParse)
+				throw new InvalidSongLenghtException();
+			else
+			{
+				this.Minutes = minutes;
+				this.Seconds = seconds;
+			}
+			this.lenght = value;
+		}
+	} 
+
+	public int Seconds
     {
         get { return this.seconds; }
         set
         {
-            if (value < 0 || value > 59)
-                throw new ArgumentException(InvalidSongSecondssEx);
+			if (value < 0 || value > 59)
+				throw new InvalidSongSecondsException();
             this.seconds = value;
         }
     }
@@ -40,8 +56,8 @@ public class Radio : IRadio
         get { return this.minutes; }
         set
         {
-            if (value < 0 || value > 14)
-                throw new ArgumentException(InvalidSongMinutesEx);
+			if (value < 0 || value > 14)
+				throw new InvalidSongMinutesException();
             this.minutes = value;
         }
     }
@@ -51,8 +67,8 @@ public class Radio : IRadio
         get { return this.songName; }
         set
         {
-            if (value.Length < 3 || value.Length > 30)
-                throw new ArgumentException(InvalidSongNameEx);
+			if (value.Length < 3 || value.Length > 30)
+				throw new InvalidSongLenghtException();
             this.songName = value;
         }
     }
@@ -62,8 +78,8 @@ public class Radio : IRadio
         get { return this.artistName; }
         set
         {
-            if (value.Length < 3 || value.Length > 20)
-                throw new ArgumentException(InvalidArtistNameEx);
+			if (value.Length < 3 || value.Length > 20)
+				throw new InvalidArtistNameException();
             this.artistName = value;
         }
     }

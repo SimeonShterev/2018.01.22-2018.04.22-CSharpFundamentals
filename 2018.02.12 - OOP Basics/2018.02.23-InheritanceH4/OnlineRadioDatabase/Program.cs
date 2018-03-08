@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 class Program
 {
@@ -12,41 +13,18 @@ class Program
 		{
 			try
 			{
-				string[] input;
-				string artistName;
-				string songName;
-				string[] songLenght;
-				int minutes;
-				int seconds;
-				try
-				{
-					input = Console.ReadLine().Split(';', StringSplitOptions.RemoveEmptyEntries);
-					artistName = input[0];
-					songName = input[1];
-					try
-					{
-						songLenght = input[2].Split(':');
-						minutes = int.Parse(songLenght[0]);
-						seconds = int.Parse(songLenght[1]);
-					}
-					catch (Exception)
-					{
-						Console.WriteLine("Invalid song length.");
-						continue;
-					}
-				}
-				catch (Exception)
-				{
-					Console.WriteLine("Invalid song.");
-					continue;
-				}
-				Radio radio = new Radio(artistName, songName, minutes, seconds);
-				TimeSpan currentSongLenght = new TimeSpan(0, minutes, seconds);
-				timeCounter = timeCounter.Add(currentSongLenght);
+				string[] input = Console.ReadLine().Split(';', StringSplitOptions.RemoveEmptyEntries);
+				if (input.Length != 3)
+					throw new InvalidSongException();
+				string artistName = input[0];
+				string songName = input[1];
+				string songLenght = input[2];
+				Radio radio = new Radio(artistName, songName, songLenght);
+				timeCounter = AddTime(timeCounter, radio);
 				songList.Add(radio);
 				Console.WriteLine("Song added.");
 			}
-			catch (ArgumentException ex)
+			catch (Exception ex)
 			{
 				Console.WriteLine(ex.Message);
 			}
@@ -57,5 +35,14 @@ class Program
 		int minutesResult = timeCounter.Minutes;
 		int secondsResult = timeCounter.Seconds;
 		Console.WriteLine($"Playlist length: {hoursResult}h {minutesResult}m {secondsResult}s");
+	}
+
+	private static TimeSpan AddTime(TimeSpan timeCounter, Radio radio)
+	{
+		int minutes = radio.Minutes;
+		int seconds = radio.Seconds;
+		TimeSpan currentSongLenght = new TimeSpan(0, minutes, seconds);
+		timeCounter += currentSongLenght;
+		return timeCounter;
 	}
 }
