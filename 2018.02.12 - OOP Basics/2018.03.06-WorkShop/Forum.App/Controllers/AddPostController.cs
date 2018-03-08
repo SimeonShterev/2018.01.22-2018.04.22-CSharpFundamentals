@@ -8,7 +8,7 @@
     {
         public MenuState ExecuteCommand(int index)
         {
-            throw new System.NotImplementedException();
+			throw new System.NotImplementedException();
         }
 
         public IView GetView(string userName)

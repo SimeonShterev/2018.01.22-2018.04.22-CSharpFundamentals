@@ -1,30 +1,82 @@
 ﻿namespace Forum.App.Services
 {
+	using System;
     using Forum.App.Services.Contracts;
-    using Forum.App.UserInterface.Contracts;
+	using Forum.App.UserInterface;
+	using Forum.App.UserInterface.Contracts;
+	using Forum.App.UserInterface.Views;
 
-    public class LogInController : IController, IReadUserInfoController
+	public class LogInController : IController, IReadUserInfoController
     {
-        public string Username => throw new System.NotImplementedException();
+		public LogInController()
+		{
+			this.ResetLogin();
+		}
 
-        public MenuState ExecuteCommand(int index)
+        public string Username { get; private set; }
+
+		private string Password { get; set; }
+
+		private bool Error { get; set; }
+
+		private enum Command
+		{
+			ReadUsername,
+			ReadPassword,
+			LogIn,
+			Back
+		}
+
+		private void ResetLogin()
+		{
+			this.Error = false;
+			this.Username = string.Empty;
+			this.Password = string.Empty;
+		}
+
+		public MenuState ExecuteCommand(int index)
         {
-            throw new System.NotImplementedException();
-        }
+			switch ((Command)index)
+			{
+				case Command.ReadUsername:
+					this.ReadUsername();
+					return MenuState.Login;
+				case Command.ReadPassword:
+					this.ReadPassword();
+					return MenuState.Login;
+				case Command.LogIn:
+					bool loggedIn = UserService.TryLogInUser(this.Username, this.Password);
+					if(loggedIn)
+					{
+						return MenuState.SuccessfulLogIn;
+					}
+					this.Error = true;
+					return MenuState.Error;
+				case Command.Back:
+					this.ResetLogin();
+					return MenuState.Back;
+				default:
+					break;
+			}
+			throw new InvalidOperationException();
+		}
 
         public IView GetView(string userName)
         {
-            throw new System.NotImplementedException();
+			return new LogInView(this.Error, this.Username, this.Password.Length);
         }
 
         public void ReadPassword()
         {
-            throw new System.NotImplementedException();
+			this.Password = ForumViewEngine.ReadRow();
+			ForumViewEngine.HideCursor();
         }
 
         public void ReadUsername()
         {
-            throw new System.NotImplementedException();
+			this.Username = ForumViewEngine.ReadRow();
+			ForumViewEngine.HideCursor();
         }
+
     }
 }

@@ -62,12 +62,16 @@
 
         private enum GuestCommand
         {
-            Categories, Login, SignUp
+            Categories,
+			Login,
+			SignUp
         }
 
         private enum UserCommand
         {
-            Categories, AddPost, LogOut
+            Categories,
+			AddPost,
+			LogOut
         }
     }
 }

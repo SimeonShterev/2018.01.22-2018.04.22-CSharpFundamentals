@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Forum.Data
 {
-    class ForurData
+    public class ForumData
     {
-		public ForurData()
+		public ForumData()
 		{
 			this.Users = DataMapper.LoadUsers();
 			this.Categories = DataMapper.LoadCategories();
