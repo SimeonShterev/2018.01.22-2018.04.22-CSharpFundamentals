@@ -21,5 +21,9 @@ namespace Forum.Models
         public string Content { get; set; }
 
         public int CategoryId { get; set; }
-    }
+
+		public int AuthorId { get; set; }
+
+		public ICollection<int> ReplyIds { get; set; }
+	}
 }

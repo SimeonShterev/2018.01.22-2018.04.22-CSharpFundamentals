@@ -1,14 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <ApplicationIcon />
-    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Forum.Models\Forum.Models.csproj" />
+    <Folder Include="UserInterface\ViewModels\" />
   </ItemGroup>
 
 </Project>

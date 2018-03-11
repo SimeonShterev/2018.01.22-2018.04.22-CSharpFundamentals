@@ -7,19 +7,56 @@ using System.Text;
 
 namespace Forum.Data
 {
-    public static class DataMapper
+    public class DataMapper
     {
 		private const string DATA_PATH = "../data/";
 		private const string CONFIG_PATH = "config.ini";
-
 		private const string DEFAULT_CONFIG = "users=users.csv\r\ncategories=categories.csv\r\nposts=posts.csv\r\nreplies=replies.csv";
-
 		private static readonly Dictionary<string, string> config;
 
 		static DataMapper()
 		{
 			Directory.CreateDirectory(DATA_PATH);
 			config = LoadConfig(DATA_PATH + CONFIG_PATH);
+		}
+
+		private static void EnsureConfigFile(string configFilePath)
+		{
+			if (!File.Exists(configFilePath))
+			{
+				File.WriteAllText(configFilePath, DEFAULT_CONFIG);
+			}
+		}
+
+		private static void EnsureFile(string path)
+		{
+			if (!File.Exists(path))
+			{
+				File.Create(path).Close();
+			}
+		}
+
+		private static Dictionary<string, string> LoadConfig(string configFilePath)
+		{
+			EnsureFile(configFilePath);
+
+			var contents = ReadLines(configFilePath);
+			var config = contents
+				.Select(l => l.Split('='))
+				.ToDictionary(t => t[0], t => DATA_PATH + t[1]);
+			return config;
+		}
+
+		private static string[] ReadLines(string configFilePath)
+		{
+			EnsureFile(configFilePath);
+			var lines = File.ReadAllLines(configFilePath);
+			return lines;
+		}
+
+		private static void WriteLines(string path, string[] lines)
+		{
+			File.WriteAllLines(path, lines);
 		}
 
 		public static List<Category> LoadCategories()
@@ -51,7 +88,7 @@ namespace Forum.Data
 				string line = string.Format(categoryFormat,
 					category.Id,
 					category.Name,
-					string.Join(",", category.PostIds)
+					string.Join(",", category.Posts)
 					);
 				lines.Add(line);
 			}
@@ -89,12 +126,11 @@ namespace Forum.Data
 				string line = string.Format(userFormat,
 					user.Id,
 					user.Username,
-					user.Password, 
-					string.Join(",", user.PostIds)
+					user.Password,
+					string.Join(",", user.Posts)
 					);
 				lines.Add(line);
 			}
-
 			WriteLines(config["users"], lines.ToArray());
 		}
 
@@ -110,7 +146,12 @@ namespace Forum.Data
 				var title = args[1];
 				var content = args[2];
 				var categoryId = int.Parse(args[3]);
-				Post post = new Post(id, title, content, categoryId);
+				var authorId = int.Parse(args[4]);
+				var replies = args[5]
+					.Split(',', StringSplitOptions.RemoveEmptyEntries)
+					.Select(int.Parse)
+					.ToArray();
+				Post post = new Post(id, title, content, categoryId, authorId, replies);
 				posts.Add(post);
 			}
 			return posts;
@@ -120,16 +161,17 @@ namespace Forum.Data
 			List<string> lines = new List<string>();
 			foreach (var post in posts)
 			{
-				const string postFormat = "{0};{1};{2};{3}";
+				const string postFormat = "{0};{1};{2};{3};{4};{5}";
 				string line = string.Format(postFormat,
 					post.Id,
 					post.Title,
 					post.Content,
-					post.CategoryId
+					post.Categories,
+					post.Authors,
+					string.Join(",",post.Replies)
 					);
 				lines.Add(line);
 			}
-
 			WriteLines(config["posts"], lines.ToArray());
 		}
 
@@ -145,7 +187,7 @@ namespace Forum.Data
 				var content = args[1];
 				var authorId = int.Parse(args[2]);
 				var postId = int.Parse(args[3]);
-				Reply reply = new Reply(id, authorId, postId, content);
+				Reply reply = new Reply(id, content, authorId, postId);
 				replies.Add(reply);
 			}
 			return replies;
@@ -160,53 +202,13 @@ namespace Forum.Data
 				string line = string.Format(replyFormat,
 					reply.Id,
 					reply.Content,
-					reply.AuthorId,
-					reply.PostId
+					reply.Authors,
+					reply.Posts
 					);
 				lines.Add(line);
 			}
 
 			WriteLines(config["replies"], lines.ToArray());
 		}
-
-		private static void EnsureConfigFile(string configFilePath)
-		{
-			if (!File.Exists(configFilePath))
-			{
-				File.WriteAllText(configFilePath, DEFAULT_CONFIG);
-			}
-		}
-
-		private static void EnsureFile(string path)
-		{
-			if (!File.Exists(path))
-			{
-				File.Create(path).Close();
-			}
-		}
-
-		private static Dictionary<string, string> LoadConfig(string configFilePath)
-		{
-			EnsureFile(configFilePath);
-
-			var contents = ReadLines(configFilePath);
-			var config = contents
-				.Select(l => l.Split('='))
-				.ToDictionary(t => t[0], t => DATA_PATH + t[1]);
-			return config;
-		}
-
-		private static string[] ReadLines(string path)
-		{
-			EnsureFile(path);
-			var lines = File.ReadAllLines(path);
-			return lines;
-		}
-
-		private static void WriteLines(string path, string[] lines)
-		{
-			File.WriteAllLines(path, lines);
-		}
-
 	}
 }

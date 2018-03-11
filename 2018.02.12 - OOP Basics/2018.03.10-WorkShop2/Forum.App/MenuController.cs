@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Forum.App.Services;
-    using Forum.App.Services.Contracts;
+    using Forum.App.Controllers;
+    using Forum.App.Controllers.Contracts;
     using Forum.App.UserInterface;
     using Forum.App.UserInterface.Contracts;
 
@@ -81,7 +81,7 @@
 
         internal void Back()
         {
-            if (this.State == MenuState.Categories || this.State == MenuState.ViewCategory)
+            if (this.State == MenuState.Categories || this.State == MenuState.OpenCategory)
             {
                 IPaginationController currentController = (IPaginationController)this.CurrentController;
                 currentController.CurrentPage = 0;
@@ -118,8 +118,8 @@
                 case MenuState.Back:
                     this.Back();
                     break;
-                case MenuState.ViewCategory:
-                case MenuState.Error:
+				case MenuState.Error:
+                case MenuState.Rerender:
                     RenderCurrentView();
                     break;
                 case MenuState.AddReplyToPost:
@@ -146,17 +146,12 @@
 
         private void LogOut()
         {
-			this.Username = string.Empty;
-			this.LogOutUser();
-			this.RenderCurrentView();
+            throw new NotImplementedException();
         }
 
         private void SuccessfulLogin()
         {
-			var loginController = (IReadUserInfoController)this.CurrentController;
-			this.Username = loginController.Username;
-			this.LogInUser();
-			RedirectToMenu(MenuState.Main);
+            throw new NotImplementedException();
         }
 
         private void ViewPost()
@@ -166,13 +161,7 @@
 
         private void OpenCategory()
         {
-			var categoriesController = (CategoriesController)this.CurrentController;
-
-			int categoryIndex = categoriesController.CurrentPage * CategoriesController.PAGE_OFFSET + this.currentOptionIndex;
-
-			var categoryController = (CategoriesController)this.controllers[(int)MenuState.OpenCategory];
-			categoriesController.SetCategory(currentOptionIndex);
-
+            throw new NotImplementedException();
         }
 
         private void AddPost()
@@ -189,35 +178,17 @@
 
         private bool RedirectToMenu(MenuState newState)
         {
-            if(this.State != newState)
-			{
-				this.controllerHistory.Push((int)newState);
-				this.RenderCurrentView();
-				return true;
-			}
-			return false;
+            throw new NotImplementedException();
         }
 
         private void LogInUser()
         {
-			foreach (var controller in controllers)
-			{
-				if(controller is IUserRestrictedController userRedirectedController)
-				{
-					userRedirectedController.UserLogIn();
-				}
-			}
+            throw new NotImplementedException();
         }
 
         private void LogOutUser()
         {
-			foreach (var controller in controllers)
-			{
-				if (controller is IUserRestrictedController userRedirectedController)
-				{
-					userRedirectedController.UserLogOut();
-				}
-			}
-		}
+            throw new NotImplementedException();
+        }
     }
 }
