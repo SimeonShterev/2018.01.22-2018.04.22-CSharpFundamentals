@@ -14,7 +14,7 @@ public abstract class Monument : Unit, IMonuments
 
 	public override string ToString()
 	{
-		string result = $"Monument: {this.Name}, ";
+		string result = $" Monument: {this.Name}, ";
 		return result;
 	}
 }

@@ -5,10 +5,11 @@ using System.Text;
 public class WaterMonument : Monument
 {
 	public WaterMonument(string name, int waterAffinity)
-		: base(name)
-	{
-		this.WaterAffinity = waterAffinity;
-	}
+		: base(name, waterAffinity) { }
 
-	public int WaterAffinity { get; set; }
+	public override string ToString()
+	{
+		string result = $"###AWater{base.ToString()}Water Affinity: {this.Affinity}";
+		return result;
+	}
 }

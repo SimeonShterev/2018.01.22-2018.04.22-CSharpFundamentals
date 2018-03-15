@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 
-public interface IManipulateBendersList
+public class WaterNation : Nation
 {
-	void AddBenders(IBender bender);
 }

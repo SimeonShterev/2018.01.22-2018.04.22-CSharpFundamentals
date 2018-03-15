@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-public class AirBenderNation : Nation
+public interface IManipulateBendersList
 {
+	void AddBenders(IBender bender);
 }

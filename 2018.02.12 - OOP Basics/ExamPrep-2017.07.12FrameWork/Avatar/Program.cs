@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 class Program
 {
@@ -8,7 +10,7 @@ class Program
 	{
 		NationsBuilder nationBuilder = new NationsBuilder();
 		string input;
-		while ((input = Console.ReadLine())!="Quit")
+		while ((input = Console.ReadLine()) != "Quit")
 		{
 			List<string> commandArgs = input.Split().ToList();
 			string command = commandArgs[0];

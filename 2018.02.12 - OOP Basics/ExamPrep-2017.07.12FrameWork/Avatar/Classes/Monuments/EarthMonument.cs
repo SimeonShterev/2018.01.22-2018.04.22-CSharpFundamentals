@@ -5,10 +5,11 @@ using System.Text;
 public class EarthMonument : Monument
 {
 	public EarthMonument(string name, int earthAffinity)
-		: base(name)
-	{
-		this.EarthAffinity = earthAffinity;
-	}
+		: base(name, earthAffinity) { }
 
-	public int EarthAffinity { get; set; }
+	public override string ToString()
+	{
+		string result = $"###Earth{base.ToString()}Earth Affinity: {this.Affinity}";
+		return result;
+	}
 }
