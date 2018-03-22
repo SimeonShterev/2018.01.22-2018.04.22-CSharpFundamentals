@@ -2,14 +2,25 @@
 using System.Collections.Generic;
 using System.Text;
 using DungeonsAndCodeWizards.Abstracts;
+using DungeonsAndCodeWizards.Classes.Items;
 
 namespace DungeonsAndCodeWizards.Factories
 {
 	public class ItemFactory
 	{
-		internal Item CreateItem(string[] args)
+		public Item CreateItem(string itemName)
 		{
-			throw new NotImplementedException();
+			switch (itemName)
+			{
+				case "HealthPotion":
+					return new HealthPotion();
+				case "PoisonPotion":
+					return new PoisonPotion();
+				case "ArmorRepairKit":
+					return new ArmorRepairKit();
+				default:
+					throw new ArgumentException(string.Format(ErrorMessages.InvalidItemName, itemName));
+			}
 		}
 	}
 }

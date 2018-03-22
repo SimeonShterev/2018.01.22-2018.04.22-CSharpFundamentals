@@ -7,8 +7,10 @@ namespace DungeonsAndCodeWizards.Classes.Items
 {
 	public class PoisonPotion : Item
 	{
+		private const int PoisonPotionWeight = 5;
+
 		public PoisonPotion()
-			: base(5)
+			: base(PoisonPotionWeight)
 		{
 		}
 

@@ -1,73 +1,54 @@
-﻿using System;
+﻿using DungeonsAndCodeWizards.Contracts;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
+using System.Text;
 
 namespace DungeonsAndCodeWizards.Abstracts
 {
-	public abstract class Bag
-	{
-		private List<Item> itemsInBag;
+    public abstract class Bag : IBag
+    {
+		public int currentWeightOfBag;
+		public List<Item> itemsInTheBag;
 
 		protected Bag(int capacity)
 		{
 			this.Capacity = capacity;
+			this.itemsInTheBag = new List<Item>();
 		}
 
 		public int Capacity { get; }
 
-		//public int Load =>  || 
-		//public int Load 
-		//{ 
-		//	get
-		//	{
-		//		return //nqkakvo value
-		//	}
-		//} 
+		public int Load => this.currentWeightOfBag;
 
-		public int Load => this.itemsInBag.Sum(i => i.Weight);
-
-		public IReadOnlyCollection<Item> Items => this.itemsInBag;
+		public IReadOnlyCollection<Item> Items => itemsInTheBag;
 
 		public void AddItem(Item item)
 		{
-			double bagNewWeight = this.Load + item.Weight;
-			if (bagNewWeight > this.Capacity)
+			bool isFull = item.Weight + this.currentWeightOfBag > this.Capacity;
+			if(isFull)
 			{
-				throw new ArgumentException();
+				throw new InvalidOperationException(ErrorMessages.FullBag);
 			}
-			this.itemsInBag.Add(item);
-
-			bool checkFull = this.Capacity - this.Load <= 5;
-			if (checkFull)
-			{
-				this.Load += 5;
-				this.itemsInBag.Add(item);
-			}
-			else
-			{
-				throw new ArgumentException(ErrorMessages.FullBag);
-			}
+			this.currentWeightOfBag += item.Weight;
+			this.itemsInTheBag.Add(item);
 		}
 
 		public Item GetItem(string name)
 		{
-			Item item = this.itemsInBag.Find(i => i.Name == name);
-			this.itemsInBag.Remove(item);
+			bool isEmpty = !this.Items.Any();
+			if(isEmpty)
+			{
+				throw new InvalidOperationException(ErrorMessages.EmptyBag);
+			}
+			Item item = this.Items.FirstOrDefault(i => i.Name == name);
+			bool doesntContainItem = !this.Items.Contains(item);
+			if(doesntContainItem)
+			{
+				throw new ArgumentException(string.Format(ErrorMessages.NotSuchAnItemIntTheBag, name));
+			}
 			return item;
 		}
 
-		public bool CheckForItem(string name)
-		{
-			Item item = itemsInBag.Find(i => i.Name == name);
-			if (itemsInBag.Contains(item))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
 	}
 }

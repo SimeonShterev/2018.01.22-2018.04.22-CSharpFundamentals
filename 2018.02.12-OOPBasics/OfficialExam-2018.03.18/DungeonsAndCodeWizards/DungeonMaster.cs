@@ -1,5 +1,6 @@
 ﻿using DungeonsAndCodeWizards.Abstracts;
 using DungeonsAndCodeWizards.Classes.Characters;
+using DungeonsAndCodeWizards.Contracts;
 using DungeonsAndCodeWizards.Factories;
 using System;
 using System.Collections.Generic;
@@ -10,229 +11,182 @@ namespace DungeonsAndCodeWizards
 {
 	public class DungeonMaster
 	{
+		private List<Character> characters;
+		private Stack<Item> itemsInPool;
 		private CharacterFactory characterFactory;
 		private ItemFactory itemFactory;
-		private List<Character> charactersList;
-		private List<Item> itemsList;
+		private int lastSurvivorStandAloneRounds = 0;
+
 
 		public DungeonMaster()
 		{
+			this.characters = new List<Character>();
+			this.itemsInPool = new Stack<Item>();
 			this.characterFactory = new CharacterFactory();
 			this.itemFactory = new ItemFactory();
-			this.charactersList = new List<Character>();
-			this.itemsList = new List<Item>();
 		}
 
 		public string JoinParty(string[] args)
 		{
+			string faction = args[0];
+			string type = args[1];
 			string name = args[2];
 			if (string.IsNullOrWhiteSpace(name))
 			{
 				throw new ArgumentException(ErrorMessages.InvalidName);
 			}
-			string type = args[1];
-			if (type != "Warrior" || type != "Cleric")
-			{
-				throw new ArgumentException(string.Format(ErrorMessages.InvalidType, type));
-			}
-			string faction = args[0];
-			if (faction != "CSharp" || faction != "Java")
-			{
-				throw new ArgumentException(string.Format(ErrorMessages.InvalidFaction, faction));
-			}
-			Character character = this.characterFactory.CreateCharacter(args);
-			charactersList.Add(character);
-			return $"{character.Name} joined the party!";
+			Character character = this.characterFactory.CreateCharacter(faction, type, name);
+			this.characters.Add(character);
+			return $"{name} joined the party!";
 		}
 
 		public string AddItemToPool(string[] args)
 		{
 			string itemName = args[0];
-			if (itemName != "HealthPotion" || itemName != "PoisonPotion")
-			{
-				throw new ArgumentException(string.Format(ErrorMessages.InvalidItem));
-			}
-			Item item = this.itemFactory.CreateItem(args);
-			itemsList.Add(item);
-			return $"{args[1]} added to pool.";
+			Item item = itemFactory.CreateItem(itemName);
+			this.itemsInPool.Push(item);
+			return $"{itemName} added to pool.";
 		}
 
 		public string PickUpItem(string[] args)
 		{
-			Character character = charactersList.FirstOrDefault(c => c.Name == args[0]);
-			if (!character.IsAlive)
-			{
-				throw new ArgumentException(ErrorMessages.Dead);
-			}
-			if (character == null)
-			{
-				throw new ArgumentException(string.Format(ErrorMessages.CharacterDoesntExist, args[0]));
-			}
-			if (!itemsList.Any())
-			{
-				throw new InvalidOperationException(ErrorMessages.NoItemsInPool);
-			}
-			Item item = itemsList.Last();
+			string characterName = args[0];
+			Character character = TryFindCharacter(characterName);
+			CheckIsPoolEmpty();
+			Item item = itemsInPool.First();
 			character.ReceiveItem(item);
-			return $"“{character.Name} picked up {item.Name}!”";
+			itemsInPool.Pop();
+			return $"{character.Name} picked up {item.Name}!";
 		}
 
 		public string UseItem(string[] args)
 		{
-			Character character = charactersList.FirstOrDefault(c => c.Name == args[0]);
-			if (!character.IsAlive)
-			{
-				throw new ArgumentException(ErrorMessages.Dead);
-			}
-			if (character == null)
-			{
-				throw new ArgumentException(string.Format(ErrorMessages.CharacterDoesntExist, args[0]));
-			}
-			if (character.Bag.CheckForItem(args[1]))
-			{
-				throw new ArgumentException(ErrorMessages.NoSuchItemInBag);
-			}
-			Item item = itemsList.Find(i => i.Name == args[1]);
+			string characterName = args[0];
+			string itemName = args[1];
+			Character character = TryFindCharacter(characterName);
+			Item item = character.Bag.GetItem(itemName);
 			character.UseItem(item);
-			switch (item.Name)
-			{
-				case "HealthPotion":
-					item.AffectCharacter(character);
-					break;
-				case "ArmorRepairKit":
-					item.AffectCharacter(character);
-					break;
-				case "PoisonPotion":
-					item.AffectCharacter(character);
-					break;
-				default:
-					// throw ex
-					break;
-			}
 			return $"{character.Name} used {item.Name}.";
 		}
 
 		public string UseItemOn(string[] args)
 		{
 			string giverName = args[0];
-			string reciverName = args[1];
-
-			Character giver = this.charactersList.Find(c => c.Name == giverName);
-			if (giver == null)
-			{
-				throw new ArgumentException(string.Format(ErrorMessages.CharacterDoesntExist, reciverName));
-			}
-
-			//if (!giver.IsAlive)
-			//{
-			//	throw new ArgumentException(ErrorMessages.Dead);
-			//}
-			//if (!reciever.IsAlive)
-			//{
-			//	throw new ArgumentException(ErrorMessages.Dead);
-			//}
-			Character reciever = charactersList.FirstOrDefault(c => c.Name == reciverName);
-			if (reciever == null)
-			{
-				throw new ArgumentException(string.Format(ErrorMessages.CharacterDoesntExist, reciverName));
-			}
-
-			if (giver.Bag.CheckForItem(args[1]))
-			{
-				throw new ArgumentException(ErrorMessages.NoSuchItemInBag);
-			}
-			Item item = itemsList.Find(i => i.Name == args[1]);
-			giver.UseItemOn(item, reciever);
-			return $"{giver.Name} used {item.Name} on {reciever.Name}.";
+			string receiverName = args[1];
+			string itemName = args[2];
+			Character giver = TryFindCharacter(giverName);
+			Character receiver = TryFindCharacter(receiverName);
+			Item item = giver.Bag.GetItem(itemName);
+			giver.UseItemOn(item, receiver);
+			return $"{giver.Name} used {item.Name} on {receiver.Name}.";
 		}
 
 		public string GiveCharacterItem(string[] args)
 		{
-			Character giver = charactersList.FirstOrDefault(c => c.Name == args[0]);
-			Character reciever = charactersList.FirstOrDefault(c => c.Name == args[0]);
-			if (!giver.IsAlive)
-			{
-				throw new ArgumentException(ErrorMessages.Dead);
-			}
-			if (!reciever.IsAlive)
-			{
-				throw new ArgumentException(ErrorMessages.Dead);
-			}
-			if (giver == null)
-			{
-				throw new ArgumentException(string.Format(ErrorMessages.CharacterDoesntExist, args[0]));
-			}
-			if (reciever == null)
-			{
-				throw new ArgumentException(string.Format(ErrorMessages.CharacterDoesntExist, args[0]));
-			}
-			if (giver.Bag.CheckForItem(args[1]))
-			{
-				throw new ArgumentException(ErrorMessages.NoSuchItemInBag);
-			}
-			Item item = itemsList.Find(i => i.Name == args[1]);
-			giver.UseItemOn(item, reciever);
-			switch (item.Name)
-			{
-				case "HealthPotion":
-					giver.GiveCharacterItem(item, reciever);
-					break;
-				case "ArmorRepairKit":
-					giver.GiveCharacterItem(item, reciever);
-					break;
-				case "PoisonPotion":
-					giver.GiveCharacterItem(item, reciever);
-					break;
-				default:
-					// throw ex
-					break;
-			}
-			return $"“{giver.Name} gave {reciever.Name} {item.Name}.";
+			string giverName = args[0];
+			string receiverName = args[1];
+			string itemName = args[2];
+			Character giver = TryFindCharacter(giverName);
+			Character receiver = TryFindCharacter(receiverName);
+			Item item = giver.Bag.GetItem(itemName);
+			giver.GiveCharacterItem(item, receiver);
+			return $"{giver.Name} gave {receiver.Name} {item.Name}.";
 		}
-
+		// dotuk raboti
 		public string GetStats()
 		{
-			throw new NotImplementedException();
+			StringBuilder sb = new StringBuilder();
+			foreach (var character in characters.OrderByDescending(c => c.IsAlive).ThenByDescending(c => c.Health))
+			{
+				sb.AppendLine(character.ToString());
+			}
+			return sb.ToString().TrimEnd();
 		}
 
 		public string Attack(string[] args)
 		{
-			Character attacker = charactersList.FirstOrDefault(c => c.Name == args[0]);
-			Character reciever = charactersList.FirstOrDefault(c => c.Name == args[0]);
-			if (!attacker.IsAlive)
+			string attackerName = args[0];
+			string receiverName = args[1];
+			Character attacker = TryFindCharacter(attackerName);
+			Character receiver = TryFindCharacter(receiverName);
+			if (!(attacker is IAttackable))
 			{
-				throw new ArgumentException(ErrorMessages.Dead);
+				throw new ArgumentException(string.Format(ErrorMessages.CanNotAttack, attackerName));
 			}
-			if (!reciever.IsAlive)
+			((Warrior)attacker).Attack(receiver);
+			StringBuilder sb = new StringBuilder();
+			sb.AppendLine($"{attacker.Name} attacks {receiver.Name} for {attacker.AbilityPoints} hit points! {receiver.Name} has {receiver.Health}/{receiver.BaseHealth} HP and {receiver.Armor}/{receiver.BaseArmor} AP left!");
+			if (!receiver.IsAlive)
 			{
-				throw new ArgumentException(ErrorMessages.Dead);
+				sb.AppendLine($"{receiver.Name} is dead!");
 			}
-			if (attacker == null)
-			{
-				throw new ArgumentException(string.Format(ErrorMessages.CharacterDoesntExist, args[0]));
-			}
-			if (reciever == null)
-			{
-				throw new ArgumentException(string.Format(ErrorMessages.CharacterDoesntExist, args[0]));
-			}
-			if (attacker.Type == reciever.Type)
-				throw new ArgumentException(ErrorMessages.FriendlyFire);
-			return $"{attacker.Name} attacks {reciever.Name} for {40} hit points! {reciever.Name} has {reciever.Health}/{reciever.BaseHealth} HP and {reciever.Armor}/{reciever.BaseArmor} AP left!";
+			return sb.ToString().TrimEnd();
 		}
 
 		public string Heal(string[] args)
 		{
-			throw new NotImplementedException();
+			string healerName = args[0];
+			string receiverName = args[1];
+			Character healer = TryFindCharacter(healerName);
+			Character receiver = TryFindCharacter(receiverName);
+			if (!(healer is IHealable))
+			{
+				throw new ArgumentException(string.Format(ErrorMessages.CanNotHeal, healerName));
+			}
+			((Cleric)healer).Heal(receiver);
+			return $"{healer.Name} heals {receiver.Name} for {healer.AbilityPoints}! {receiver.Name} has {receiver.Health} health now!";
 		}
 
-		public string EndTurn(string[] args)
+		public string EndTurn()
 		{
-			throw new NotImplementedException();
+			StringBuilder sb = new StringBuilder();
+			int standAloneRounds = 0;
+			foreach (var aliveCharacter in characters)
+			{
+				if (aliveCharacter.IsAlive)
+				{
+					double healthBeforeRest = aliveCharacter.Health;
+					aliveCharacter.Rest();
+					sb.AppendLine($"{aliveCharacter.Name} rests ({healthBeforeRest} => {aliveCharacter.Health})");
+					standAloneRounds++;
+				}
+			}
+			if (standAloneRounds <= 1)
+			{
+				this.lastSurvivorStandAloneRounds++;
+			}
+			else
+			{
+				this.lastSurvivorStandAloneRounds = 0;
+			}
+			return sb.ToString().TrimEnd();
 		}
 
 		public bool IsGameOver()
 		{
-			throw new NotImplementedException();
+			var aliveCharacters = characters.Count(c => c.IsAlive);
+			bool oneOrZeroAlive = aliveCharacters <= 1;
+			bool survivorSurvivedTooLong = this.lastSurvivorStandAloneRounds > 1;
+			return oneOrZeroAlive && survivorSurvivedTooLong;
+		}
+
+		private void CheckIsPoolEmpty()
+		{
+			bool isPoolEmpty = !itemsInPool.Any();
+			if (isPoolEmpty)
+			{
+				throw new InvalidOperationException(ErrorMessages.ItemsPoolEmpty);
+			}
+		}
+
+		private Character TryFindCharacter(string characterName)
+		{
+			Character character = characters.FirstOrDefault(c => c.Name == characterName);
+			if (character == null)
+			{
+				throw new ArgumentException(string.Format(ErrorMessages.CharacterNotFound, characterName));
+			}
+			return character;
 		}
 
 	}

@@ -7,8 +7,10 @@ namespace DungeonsAndCodeWizards.Classes.Bags
 {
 	public class Satchel : Bag
 	{
+		private const int WeightOfSetchel = 20;
+
 		public Satchel() 
-			: base(20)
+			: base(WeightOfSetchel)
 		{
 		}
 	}

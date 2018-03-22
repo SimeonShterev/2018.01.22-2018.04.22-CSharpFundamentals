@@ -7,8 +7,10 @@ namespace DungeonsAndCodeWizards.Classes.Items
 {
 	public class ArmorRepairKit : Item
 	{
+		private const int ArmorKitWeight = 10;
+
 		public ArmorRepairKit() 
-			: base(10)
+			: base(ArmorKitWeight)
 		{
 		}
 
@@ -16,7 +18,7 @@ namespace DungeonsAndCodeWizards.Classes.Items
 
 		public override void AffectCharacter(Character character)
 		{
-			character.Armor += character.BaseArmor;
+			character.Armor = character.BaseArmor; 
 		}
 	}
 }

@@ -1,27 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using DungeonsAndCodeWizards.Abstracts;
+﻿using DungeonsAndCodeWizards.Abstracts;
 using DungeonsAndCodeWizards.Classes.Characters;
 using DungeonsAndCodeWizards.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace DungeonsAndCodeWizards.Factories
 {
 	public class CharacterFactory
 	{
-		public Character CreateCharacter(string[] args)
+		public Character CreateCharacter(string faction, string type, string name)
 		{
-			string type = args[1];
-			string name = args[2];
-			object faction = Enum.Parse(typeof(Faction), args[0]);
+			bool validFaction = Enum.TryParse(typeof(Faction), faction, out object outFaction);
+			if (!validFaction)
+			{
+				throw new ArgumentException(string.Format(ErrorMessages.InvalidFaction, faction));
+			}
 			switch (type)
 			{
 				case "Warrior":
-					return new Warrior(name, (Faction)faction);
+					return new Warrior(name, (Faction)outFaction);
 				case "Cleric":
-					return new Cleric(name, (Faction)faction);
+					return new Cleric(name, (Faction)outFaction);
 				default:
-					throw new ArgumentException("exception in the characterFactory");
+					throw new ArgumentException(string.Format(ErrorMessages.InvalidCharacterType, type));
 			}
 		}
 	}

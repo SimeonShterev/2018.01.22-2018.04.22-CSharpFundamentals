@@ -9,42 +9,29 @@ namespace DungeonsAndCodeWizards.Classes.Characters
 {
 	public class Warrior : Character, IAttackable
 	{
-		private double health;
-
 		public Warrior(string name, Faction faction) 
 			: base(name, 100d, 50d, 40d, new Satchel(), faction)
 		{
 			this.RestHealMultiplier = 0.2;
 		}
 
-		public override double Health
-		{
-			get
-			{
-				return this.health;
-			}
-			set
-			{
-				if (value < 0)
-				{
-					this.IsAlive = false;
-				}
-				if (value > 100)
-				{
-					this.health = 100;
-				}
-				else
-				{
-					this.health = value;
-				}
-			}
-		}
-
 		public override string Type => "Warrior";
 
 		public void Attack(Character character) 
 		{
-			throw new NotImplementedException();
+			CheckIsAlive(this);
+			CheckIsAlive(character);
+			bool checkSelf = this.Name == character.Name;
+			if(checkSelf)
+			{
+				throw new InvalidOperationException(ErrorMessages.AttackSelf);
+			}
+			bool sameFaction = this.Faction == character.Faction;
+			if(sameFaction)
+			{
+				throw new ArgumentException(string.Format(ErrorMessages.FriendlyFire, this.Faction));
+			}
+			character.TakeDamage(this.AbilityPoints);
 		}
 	}
 }
