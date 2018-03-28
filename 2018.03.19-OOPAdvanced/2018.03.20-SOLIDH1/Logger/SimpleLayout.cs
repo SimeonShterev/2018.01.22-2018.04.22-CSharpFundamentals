@@ -1,22 +1,20 @@
-﻿using System;
+﻿using Logger.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Logger
 {
-    public class SimpleLayout
+    public class SimpleLayout : ILayout
     {
+									//date - level - message
+		private const string Format = "{0} - {1} - {2}";
 
+		public SimpleLayout() { }
 
-		public string DateTime { get; set; }
-
-		public string ReportLevel { get; set; }
-
-		public string Message { get; set; }
-
-		public override string ToString()
+		public string FormatError(IError error)
 		{
-			return $"";
+			return string.Format(Format, error.DateTime, error.Level, error.Message);
 		}
 	}
 }

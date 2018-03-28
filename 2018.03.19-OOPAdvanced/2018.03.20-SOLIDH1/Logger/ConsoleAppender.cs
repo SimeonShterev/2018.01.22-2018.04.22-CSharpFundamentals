@@ -1,14 +1,26 @@
-﻿using System;
+﻿using Logger.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Logger
 {
-    class ConsoleAppender
+    public class ConsoleAppender : IAppender
     {
-		public void AppendLayoutToConsole(SimpleLayout simpleLayout)
+		public ConsoleAppender(ILayout layout, ReportLevel level)
 		{
-			Console.WriteLine(simpleLayout);
+			this.Level = level;
+			this.Layout = layout;
+		}
+
+		public ILayout Layout { get; }
+
+		public ReportLevel Level { get; }
+
+		public void Append(IError error)
+		{
+			string formateredError = this.Layout.FormatError(error);
+			Console.WriteLine(formateredError);
 		}
     }
 }
