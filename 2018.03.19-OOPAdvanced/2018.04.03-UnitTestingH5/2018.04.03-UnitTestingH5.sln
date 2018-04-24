@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TirePressureMonitoringSyste
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DateTimeAddDays", "DateTimeAddDays\DateTimeAddDays.csproj", "{618BD2D7-4FB4-45B6-BE33-6F1AC54B7E38}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twetterr", "Twetter\Twetterr.csproj", "{B56EB96F-79C5-43B5-B9F3-85735FF47F16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Twetterr", "Twetter\Twetterr.csproj", "{B56EB96F-79C5-43B5-B9F3-85735FF47F16}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomLinkedList", "CustomLinkedList\CustomLinkedList.csproj", "{096FCD67-029F-4F2D-9A02-71787D44856C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{B56EB96F-79C5-43B5-B9F3-85735FF47F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B56EB96F-79C5-43B5-B9F3-85735FF47F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B56EB96F-79C5-43B5-B9F3-85735FF47F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{096FCD67-029F-4F2D-9A02-71787D44856C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{096FCD67-029F-4F2D-9A02-71787D44856C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{096FCD67-029F-4F2D-9A02-71787D44856C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{096FCD67-029F-4F2D-9A02-71787D44856C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

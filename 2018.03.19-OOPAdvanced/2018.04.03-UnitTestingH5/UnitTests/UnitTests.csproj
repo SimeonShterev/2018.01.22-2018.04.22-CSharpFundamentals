@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BubleSort\BubleSort.csproj" />
+    <ProjectReference Include="..\CustomLinkedList\CustomLinkedList.csproj" />
     <ProjectReference Include="..\Database\Database.csproj" />
     <ProjectReference Include="..\DateTimeAddDays\DateTimeAddDays.csproj" />
     <ProjectReference Include="..\Hack\Hack.csproj" />

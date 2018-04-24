@@ -6,20 +6,19 @@ using System.Threading.Tasks;
 
 public class Ranker : Soldier
 {
-	private const double OverallSkillMultiplier = 1.5;
+	private const double overallSkillMultiplier = 1.5;
 
-	private readonly List<string> ammunitions = new List<string>()
+	private readonly List<string> weaponsAllowed = new List<string>()
 	{
 		"Gun"
 		,"AutomaticMachine"
 		,"Helmet"
 	};
 
-	public Ranker(string name, int age, double experiece, double endurance) 
-		: base(name, age, experiece, endurance)
-	{
-		this.OverallSkill = (age + experiece) * OverallSkillMultiplier;
-	}
+	public Ranker(string name, int age, double experiece, double endurance)
+		: base(name, age, experiece, endurance) { }
 
-	protected override IReadOnlyList<string> WeaponsAllowed => this.ammunitions;
+	public override IReadOnlyList<string> WeaponsAllowed => this.weaponsAllowed;
+
+	public override double OverallSkillMultiplier => overallSkillMultiplier;
 }

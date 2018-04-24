@@ -6,14 +6,21 @@ using System.Threading.Tasks;
 
 public abstract class Ammunition : IAmmunition
 {
+	private const int wearLevelMultiplier = 100;
+
+	public Ammunition()
+	{
+		this.WearLevel = this.Weight * 100;
+	}
+
 	public string Name => this.GetType().Name;
 
 	public abstract double Weight { get; }
 
-	public abstract double WearLevel { get; }
+	public double WearLevel { get; private set; }
 
 	public void DecreaseWearLevel(double wearAmount)
 	{
-		throw new NotImplementedException();
+		this.WearLevel -= wearAmount;
 	}
 }

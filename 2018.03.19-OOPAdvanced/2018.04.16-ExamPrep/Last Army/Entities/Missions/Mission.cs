@@ -11,7 +11,7 @@ public abstract class Mission : IMission
 		this.ScoreToComplete = scoreToComplete;
 	}
 
-	public string Name => this.GetType().Name;
+	public abstract string Name { get; }
 
 	public abstract double EnduranceRequired { get; }
 

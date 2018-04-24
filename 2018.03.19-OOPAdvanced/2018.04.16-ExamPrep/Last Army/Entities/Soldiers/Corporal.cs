@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 public class Corporal : Soldier
 {
-	private const double OverallSkillMultiplier = 2.5;
+	private const double overallSkillMultiplier = 2.5;
 
-	private readonly List<string> ammunitions = new List<string>()
+	private readonly List<string> weaponsAllowed = new List<string>()
 	{
 		"Gun"
 		,"AutomaticMachine"
@@ -17,11 +17,10 @@ public class Corporal : Soldier
 		,"Knife"
 	};
 
-	public Corporal(string name, int age, double experiece, double endurance) 
-		: base(name, age, experiece, endurance)
-	{
-		this.OverallSkill = (age + experiece) * OverallSkillMultiplier;
-	}
+	public Corporal(string name, int age, double experiece, double endurance)
+		: base(name, age, experiece, endurance) { }
 
-	protected override IReadOnlyList<string> WeaponsAllowed => this.ammunitions;
+	public override IReadOnlyList<string> WeaponsAllowed => this.weaponsAllowed;
+
+	public override double OverallSkillMultiplier => overallSkillMultiplier;
 }

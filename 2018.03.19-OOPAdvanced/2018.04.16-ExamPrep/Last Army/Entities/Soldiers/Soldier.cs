@@ -11,11 +11,14 @@ public abstract class Soldier : ISoldier
 		this.Age = age;
 		this.Experience = experience;
 		this.Endurance = endurance;
+		this.Weapons = new Dictionary<string, IAmmunition>();
+		this.InitialiseWeapon();
+		this.OverallSkill = (this.Age + this.Experience) * this.OverallSkillMultiplier;
 	}
 
 	public IDictionary<string, IAmmunition> Weapons { get; }
 
-	protected abstract IReadOnlyList<string> WeaponsAllowed { get; }
+	public abstract IReadOnlyList<string> WeaponsAllowed { get; }
 
 	public string Name { get; }
 
@@ -25,11 +28,19 @@ public abstract class Soldier : ISoldier
 
 	public double Endurance { get; private set; }
 
-	public double OverallSkill { get; protected set; }
+	public double OverallSkill { get; private set; }
+
+	public abstract double OverallSkillMultiplier { get; }
 
 	public virtual int EnduranceIncreacement => Endurance_Increacement;
 
-	//-----------------
+	private void InitialiseWeapon()
+	{
+		foreach (var weapon in this.WeaponsAllowed)
+		{
+			this.Weapons.Add(weapon, null);
+		}
+	}
 
 	public bool ReadyForMission(IMission mission)
 	{
@@ -62,8 +73,6 @@ public abstract class Soldier : ISoldier
 		}
 	}
 
-	public override string ToString() => string.Format(OutputMessages.SoldierToString, this.Name, this.OverallSkill);
-
 	public void Regenerate()
 	{
 		this.Endurance += this.Age + this.EnduranceIncreacement;
@@ -75,6 +84,14 @@ public abstract class Soldier : ISoldier
 
 	public void CompleteMission(IMission mission)
 	{
-		throw new System.NotImplementedException();
+		this.Endurance -= mission.EnduranceRequired;
+		this.Experience += mission.EnduranceRequired;
+		this.AmmunitionRevision(mission.WearLevelDecrement);
+		this.OverallSkill = (this.Age + this.Experience) * this.OverallSkillMultiplier;
+	}
+
+	public override string ToString()
+	{
+		return string.Format(OutputMessages.SoldierToString, this.Name, this.OverallSkill);
 	}
 }

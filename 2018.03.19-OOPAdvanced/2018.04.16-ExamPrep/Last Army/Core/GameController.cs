@@ -4,139 +4,83 @@ using System.Text;
 
 public class GameController
 {
-	private Dictionary<string, List<Soldier>> army;
-	private Dictionary<string, List<Ammunition>> wearHouse;
-	private MissionController missionControllerField;
-	private StringBuilder result;
-	public GameController()
+	private IArmy army;
+	private IWareHouse wareHouse;
+	private MissionController missionController;
+	private IWriter writer;
+
+	private SoldierFactory soldiersFactory;
+	private MissionFactory missionFactory;
+	private AmmunitionFactory ammunitionFactory;
+
+	public GameController(IWriter writer)
 	{
-		this.Army = new Dictionary<string, List<Soldier>>();
-		this.WearHouse = new Dictionary<string, List<Ammunition>>();
-		this.MissionControllerField = new MissionController();
-		this.result = new StringBuilder();
+		this.wareHouse = new WareHouse(writer);
+		this.army = new Army(this.wareHouse);
+		this.missionController = new MissionController(this.army, this.wareHouse);
+		this.writer = writer;
+
+		this.soldiersFactory = new SoldierFactory();
+		this.missionFactory = new MissionFactory();
+		this.ammunitionFactory = new AmmunitionFactory();
 	}
 
-	public Dictionary<string, List<Soldier>> Army
+	public void GiveInputToGameController(string input)
 	{
-		get { return army; }
-		set { army = value; }
-	}
+		var data = input.Split();
 
-	public Dictionary<string, List<Ammunition>> WearHouse
-	{
-		get { return wearHouse; }
-		set { wearHouse = value; }
-	}
-
-	public MissionController MissionControllerField
-	{
-		get { return missionControllerField; }
-		set { missionControllerField = value; }
-	}
-
-	public string RequestResult()
-	{
-		return Output.GiveOutput(this.result, army, wearHouse, this.MissionControllerField.Missions.Count);
-	}
-
-	private void AddAmmunitions(Ammunition ammunition)
-	{
-		if (!this.WearHouse.ContainsKey(ammunition.Name))
+		if (data[0].Equals("Soldier"))
 		{
-			this.WearHouse[ammunition.Name] = new List<Ammunition>();
-			this.WearHouse[ammunition.Name].Add(ammunition);
+			if (data[1].Equals("Regenerate"))
+			{
+				string soldierType = data[2];
+
+				this.army.RegenerateTeam(soldierType);
+			}
+			else
+			{
+				string type = data[1];
+				string name = data[2];
+				int age = int.Parse(data[3]);
+				double experience = double.Parse(data[4]);
+				double endurance = double.Parse(data[5]);
+
+				ISoldier soldier = this.soldiersFactory.CreateSoldier(type, name, age, experience, endurance);
+				this.army.AddSoldier(soldier);
+			}
 		}
-		else
+		else if (data[0].Equals("WareHouse"))
 		{
-			this.WearHouse[ammunition.Name][0].Number += ammunition.Number;
+			string name = data[1];
+			int number = int.Parse(data[2]);
+
+			this.wareHouse.AddWeaponsToWarehouse(name, number);
+		}
+		else if (data[0].Equals("Mission"))
+		{
+			string missionType = data[1];
+			int scoreToComplete = int.Parse(data[2]);
+
+			IMission mission = this.missionFactory.CreateMission(missionType, scoreToComplete);
+			string output = this.missionController.PerformMission(mission);
+			this.writer.Append(output);
 		}
 	}
 
-	private void AddSoldierToArmy(Soldier soldier, string type)
+	public void ProduceSummary()
 	{
-		if (!soldier.CheckIfSoldierCanJoinTeam())
-		{
-			throw new ArgumentException($"The soldier {soldier.Name} is not skillful enough {type} team");
-		}
+		this.writer.Append(OutputMessages.Result);
+		this.missionController.FailMissionsOnHold();
 
-		if (!this.Army.ContainsKey(type))
+		this.writer.Append(string.Format(OutputMessages.MissionSuccessful, this.missionController.SuccessMissionCounter));
+		this.writer.Append(string.Format(OutputMessages.MissionFailed, this.missionController.FailedMissionCounter));
+
+		this.writer.Append(OutputMessages.Soldiers);
+
+		foreach (var soldier in this.army.Soldiers)
 		{
-			this.Army[type] = new List<Soldier>();
+			this.writer.Append(soldier.ToString());
 		}
-		this.Army[type].Add(soldier);
+		this.writer.PrintResult();
 	}
-
-	////public void GiveInputToGameController(string input)
-	////{
-	////	var data = input.Split();
-
-	////	if (data[0].Equals("Soldier"))
-	////	{
-	////		string type = string.Empty;
-	////		string name = string.Empty;
-	////		int age = 0;
-	////		int experience = 0;
-	////		double speed = 0d;
-	////		double endurance = 0d;
-	////		double motivation = 0;
-	////		double maxWeight = 0d;
-
-	////		if (data.Length == 3)
-	////		{
-	////			type = data[1];
-	////			name = data[2];
-	////		}
-	////		else
-	////		{
-	////			type = data[1];
-	////			name = data[2];
-	////			age = int.Parse(data[3]);
-	////			experience = int.Parse(data[4]);
-	////			speed = double.Parse(data[5]);
-	////			endurance = double.Parse(data[6]);
-	////			motivation = double.Parse(data[7]);
-	////			maxWeight = double.Parse(data[8]);
-	////		}
-
-	////		switch (type)
-	////		{
-	////			case "Ranker":
-	////				var ranker = SoldiersFactory.GenerateRanker(name, age, experience, speed, endurance,
-	////					motivation, maxWeight);
-	////				AddSoldierToArmy(ranker, type);
-	////				break;
-	////			case "Corporal":
-	////				var corporal = SoldiersFactory.GenerateCorporal(name, age, experience, speed, endurance,
-	////					motivation, maxWeight);
-	////				AddSoldierToArmy(corporal, type);
-	////				break;
-	////			case "Special-Force":
-	////				var specialForce = SoldiersFactory.GenerateSpecialForce(name, age, experience, speed, endurance,
-	////					motivation, maxWeight);
-	////				AddSoldierToArmy(specialForce, type);
-	////				break;
-	////			case "Regenerate":
-	////				SoldierController.TeamRegenerate(army, name);
-	////				break;
-	////			case "Vacation":
-	////				SoldierController.TeamGoesOnVacation(army, name);
-	////				break;
-	////			case "Bonus":
-	////				SoldierController.TeamGetBonus(army, name);
-	////				break;
-	////		}
-
-	////	}
-	////	else if (data[0].Equals("WearHouse"))
-	////	{
-	////		string name = data[1];
-	////		int number = int.Parse(data[2]);
-
-	////		AddAmmunitions(AmmunitionFactory.CreateAmmunitions(name, number));
-	////	}
-	////	else if (data[0].Equals("Mission"))
-	////	{
-	////		this.MissionControllerField.PerformMission(new Easy());
-	////	}
-	////}
 }

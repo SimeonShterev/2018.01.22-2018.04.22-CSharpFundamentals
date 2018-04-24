@@ -10,20 +10,19 @@ namespace UnitTests
 	{
 		private const int defaultCapasity = 16;
 
-		static string[][] Parameters = new string[][] 
+		static int[][] Parameters = new int[][]
 		{
-			new string[] { "", "fgjfgjf" },
-			new string[] { "", "fgjfgjf" },
-			new string[] { "", "asd" }
+			new int[] { 1,2,3,4 },
+			new int[] { int.MinValue, int.MaxValue },
+			new int[] {  }
 		};
 
 		[Test]
-		[TestCase("1", "test", 7)]
 		[TestCaseSource(nameof(Parameters))]
-		[TestCase(new int[] { 1, 2, 3, 4 })]
-		[TestCase(new int[] { int.MinValue, int.MaxValue })]
-		[TestCase(new int[] { 0 })]
-		[TestCase(new int[] { })]
+		//[TestCase(new int[] { 1, 2, 3, 4 })]
+		//[TestCase(new int[] { int.MinValue, int.MaxValue })]
+		//[TestCase(new int[] { 0 })]
+		//[TestCase(new int[] { })]
 		public void DoesConstructorInitialiseValues(int[] values)
 		{
 			DataBase<int> db = new DataBase<int>(values);
@@ -76,7 +75,7 @@ namespace UnitTests
 			FieldInfo currentIndex = GetCurentIndex(db);
 			currentIndex.SetValue(db, lenght);
 			FieldInfo arrayInfo = GetArray(db);
-			arrayInfo.SetValue(db, values.Concat(new int[defaultCapasity-lenght]).ToArray());
+			arrayInfo.SetValue(db, values.Concat(new int[defaultCapasity - lenght]).ToArray());
 
 			db.Remove();
 			int[] fieldValue = (int[])arrayInfo.GetValue(db);

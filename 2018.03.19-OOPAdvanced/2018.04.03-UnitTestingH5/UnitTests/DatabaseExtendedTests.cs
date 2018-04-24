@@ -12,10 +12,16 @@ namespace UnitTests
 	{
 		private const int defaultCapacity = 16;
 
-		[Test]
-		public void TestConstructor()
+		static Person[][] Parameters = new Person[][]
 		{
-			Person[] people = new Person[] { new Person(1, "Pesho"), new Person(2, "Gosho") };
+			new Person[] {new Person( 1, "Pesho" ), new Person(2, "Gosho") },
+			new Person[] {new Person( 1, "Simo" ), new Person(10, "PedroEskobar") },
+		};
+
+		[Test]
+		[TestCaseSource(nameof(Parameters))]
+		public void TestConstructor(Person[] people)
+		{
 			ExtendedDatabase db = new ExtendedDatabase(people);
 
 			FieldInfo peopleInfo = GetPeopleArrayField();

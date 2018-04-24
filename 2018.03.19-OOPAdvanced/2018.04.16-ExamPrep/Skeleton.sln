@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Last Army", "Last Army\Last Army.csproj", "{FA1AC72F-2CD0-4247-9078-B9BD8C9216CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LastArmyMyTest", "LastArmyMyTest\LastArmyMyTest.csproj", "{F6B5BC65-66E5-4708-95CD-C40E199EB839}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LastArmyJudge", "LastArmyJudge\LastArmyJudge.csproj", "{E4886AC6-5DD6-4323-8477-22D39E23B0A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +19,19 @@ Global
 		{FA1AC72F-2CD0-4247-9078-B9BD8C9216CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA1AC72F-2CD0-4247-9078-B9BD8C9216CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA1AC72F-2CD0-4247-9078-B9BD8C9216CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6B5BC65-66E5-4708-95CD-C40E199EB839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6B5BC65-66E5-4708-95CD-C40E199EB839}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6B5BC65-66E5-4708-95CD-C40E199EB839}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6B5BC65-66E5-4708-95CD-C40E199EB839}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4886AC6-5DD6-4323-8477-22D39E23B0A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4886AC6-5DD6-4323-8477-22D39E23B0A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4886AC6-5DD6-4323-8477-22D39E23B0A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4886AC6-5DD6-4323-8477-22D39E23B0A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CE2A000F-7904-4898-92C0-1CA7EA80D169}
 	EndGlobalSection
 EndGlobal

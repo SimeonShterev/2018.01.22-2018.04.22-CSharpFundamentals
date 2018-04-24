@@ -42,7 +42,7 @@ public class MissionController
 
             if (successful)
             {
-                sb.AppendLine(string.Format(OutputMessages.MissionSuccessful, currentMission.Name));
+                sb.AppendLine(string.Format(OutputMessages.MissionCompleted, currentMission.Name));
             }
             else
             {
