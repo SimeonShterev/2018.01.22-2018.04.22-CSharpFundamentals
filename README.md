@@ -2,6 +2,6 @@
 ProfetionalModulPart1
 <html>
 <main>
-<H1 color = red> Ei tuka malko 4erven tekst 6e slojim<H2>
+<h1 color = red>Ei tuka malko 4erven tekst 6e slojim<h1>
 </main>
 </html>
